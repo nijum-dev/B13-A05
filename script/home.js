@@ -146,11 +146,11 @@ function openModal(issue) {
 
     priorityEl.textContent = issue.priority;
 
-    if (issue.priority === "HIGH") {
+    if (issue.priority === "high") {
         priorityEl.className =
             "px-3 py-1 rounded-full bg-red-500 text-white text-xs";
     }
-    else if (issue.priority === "MEDIUM") {
+    else if (issue.priority === "medium") {
         priorityEl.className =
             "px-3 py-1 rounded-full bg-yellow-500 text-white text-xs";
     }
@@ -234,7 +234,7 @@ async function loadIssues() {
     loadingEl.style.display = "flex";
     containerEl.style.display = "none";
 
-    // Minimum 2s delay for visible spinner
+    // spinner
     const startTime = Date.now();
     try {
         const res = await fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues");
