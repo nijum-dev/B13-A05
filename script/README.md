@@ -32,10 +32,10 @@ Example:const add = (a,b) => a + b;
 It works like a normal function but the syntax is shorter.
 
 ## What are template literals
-
 Ans: Template literals are used to create strings easily and to insert variables inside strings. They use backticks ` ` instead of quotes.
 
 Example: 
 let name = "Nijum";
 let text = `My name is ${name}`;
 This allows us to add variables directly inside the string.
+

@@ -248,8 +248,6 @@ async function loadIssues() {
         loadingEl.style.display = "none";
         return;
     }
-
-
     const elapsed = Date.now() - startTime;
     const remaining = 200 - elapsed;
     if (remaining > 0) {
