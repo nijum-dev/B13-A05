@@ -97,13 +97,10 @@ ${issue.labels?.map(label => {
 
 </div>
 `;
-
         container.innerHTML += card;
 
     });
-
 }
-
 // modal open
 function openModal(issue) {
 
