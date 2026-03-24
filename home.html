@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>GitHub Issues Tracker</title>
+
+    <link rel="shortcut icon" href="assets/github-logo.png">
+
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            font-family: "Geist", sans-serif;
+        }
+
+        #filter-btn .filter-btn {
+            border: 1px solid #E5E7EB;
+            background: white;
+            color: #374151;
+            font-weight: 500;
+            transition: all .2s ease;
+        }
+
+        #filter-btn .filter-btn:hover {
+            background: #f3f4f6;
+        }
+
+        #filter-btn .filter-btn.active {
+            background: #4A00FF;
+            color: white;
+            border-color: #4A00FF;
+        }
+    </style>
+
+</head>
+
+<body class="bg-[#F8FAFC] min-h-screen">
+
+  
+    <header class="border-b bg-white">
+
+        <div class="max-w-7xl mx-auto flex justify-between items-center py-4 px-6">
+
+            <div class="flex items-center gap-2">
+                <img src="./assets/github-logo.png" class="w-8">
+
+                <h1 class="font-bold text-xl">
+                    GitHub Issues Tracker
+                </h1>
+            </div>
+
+            <div class="md:flex items-center gap-2 ml-auto">
+
+                <input type="text" placeholder="Search issues..." class="input input-bordered md:w-56 " />
+
+                <button class="btn bg-[#4A00FF] text-white">
+                    + New Issue
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+   
+    <section id="filter-btn" class="max-w-7xl mx-auto mt-8 px-6">
+
+        <div class="flex gap-3">
+
+            <button class="btn filter-btn active">All</button>
+            <button class="btn filter-btn">Open</button>
+            <button class="btn filter-btn">Closed</button>
+
+        </div>
+
+    </section>
+
+
+    <!-- SUMMARY -->
+    <section class="max-w-7xl mx-auto mt-6 px-6">
+
+        <div class="bg-white p-6 rounded-lg shadow flex justify-between items-center">
+
+            <div class="flex items-center gap-4">
+
+                <div class="flex-shrink-0">
+                    <span class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#F3E8FF]">
+                        <img src="./assets/Aperture.png" class="w-10 h-10">
+                    </span>
+                </div>
+
+                <div>
+                    <h2 class="font-bold text-2xl leading-tight">Issues</h2>
+                    <p class="text-gray-500 text-base leading-tight">
+                        Track and manage your project issues
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="md:flex gap-6">
+
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                    Open
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 bg-purple-500 rounded-full"></span>
+                    Closed
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CARDS -->
+    <section class="max-w-7xl mx-auto mt-6 px-6">
+
+        <div id="issues-loading" class="flex justify-center items-center py-12">
+            <div class="loading loading-spinner loading-lg"></div>
+            <span class="ml-3 text-lg">Loading issues...</span>
+        </div>
+        <div id="issues-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5"
+            style="display: none;">
+
+        </div>
+
+    </section>
+
+
+    <!-- MODAL -->
+    <dialog id="issue-modal" class="modal">
+
+        <div class="modal-box max-w-xl">
+
+            <h3 id="modal-title" class="font-bold text-lg"></h3>
+
+            <div class="flex items-center gap-2 text-sm text-gray-500 mt-2">
+                <span id="modal-status"></span>
+                <span>•</span>
+                <span id="modal-author"></span>
+                <span>•</span>
+                <span id="modal-date"></span>
+            </div>
+
+            <div id="modal-labels" class="flex gap-2 mt-4 flex-wrap"></div>
+
+            <p id="modal-description" class="mt-4 text-gray-600"></p>
+
+            <div class="bg-gray-100 p-4 rounded-lg mt-4 flex justify-between">
+
+                <div>
+                    <p class="text-sm text-gray-500">Assignee:</p>
+                    <p id="modal-assignee" class="font-medium"></p>
+                </div>
+
+                <div>
+                    <p class="text-sm text-gray-500">Priority:</p>
+                    <span id="modal-priority" class="px-3 py-1 rounded-full text-white text-xs"></span>
+                </div>
+
+            </div>
+
+            <div class="modal-action">
+                <button class="btn bg-[#4A00FF] text-white" onclick="closeModal()">
+                    Close
+                </button>
+            </div>
+
+        </div>
+
+    </dialog>
+
+
+
+    <dialog id="new-issue-modal" class="modal">
+
+        <div class="modal-box max-w-lg">
+
+            <h3 class="font-bold text-lg">Create New Issue</h3>
+
+            <form id="new-issue-form" class="mt-4">
+
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Title</span>
+                    </label>
+                    <input id="new-issue-title" type="text" placeholder="Issue title"
+                        class="input input-bordered w-full" required />
+                </div>
+
+                <div class="form-control mt-4">
+                    <label class="label">
+                        <span class="label-text">Description</span>
+                    </label>
+                    <textarea id="new-issue-description" placeholder="Describe the issue..."
+                        class="textarea textarea-bordered w-full h-24" required></textarea>
+                </div>
+
+                <div class="form-control mt-4">
+                    <label class="label">
+                        <span class="label-text">Priority</span>
+                    </label>
+                    <select id="new-issue-priority" class="select select-bordered w-full">
+                        <option value="HIGH">HIGH</option>
+                        <option value="MEDIUM" selected>MEDIUM</option>
+                        <option value="LOW">LOW</option>
+                    </select>
+                </div>
+
+                <div class="modal-action">
+                    <button type="button" id="close-new-issue" class="btn">Cancel</button>
+                    <button type="submit" class="btn bg-[#4A00FF] text-white">Create Issue</button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </dialog>
+
+    <script src="script/home.js"></script>
+
+</body>
+
+</html>
