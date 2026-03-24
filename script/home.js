@@ -138,7 +138,7 @@ function openModal(issue) {
     const labelsContainer = document.getElementById("modal-labels");
 
     labelsContainer.innerHTML = issue.labels?.map(label =>
-        `<span class="badge bg-gray-100 text-gray-700">${label}</span>`
+        `<span class="badge bg-red-100 text-red-700">${label}</span>`
     ).join("");
 
     // priority
