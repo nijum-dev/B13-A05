@@ -5,7 +5,6 @@ const searchInput = document.querySelector('input[placeholder="Search issues..."
 
 let allIssues = [];
 
-
 function renderIssues(issues) {
 
     container.innerHTML = "";
@@ -269,7 +268,6 @@ function setActive(btn) {
     btn.classList.add("active");
 
 }
-
 // filters
 filterBtns.forEach(btn => {
 
